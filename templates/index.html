@@ -18,40 +18,91 @@
         <div class="chatbox" id="chatbox">
           <ul id="messages">
             <div class="chat-message bot-message">
-              <p class="botText"><span>Hello! How can I assist you?</span></p>
+              <!-- <img src="/images/doctor.jpg" width="32" height="32" alt="Avatar" class="avatar"> -->
+              <p class="botText"><span>Hej! Jestem Dr. Feyenally i odpowiem na wszystkie twoje pytania związane z okulistyką.  
+                Zachęcam do wypełnienia krótkiej ankiety, która pozwoli mnie oraz zespołowi Feyenally pomóc w Twoich problemach ze wzrokiem :)</span></p>
             </div>
           </ul>
         </div>
         <div class="userInput">
-            <input type="text" id="textInput" placeholder="Type here...">
+            <input type="text" id="textInput" placeholder="Pisz tutaj...">
             <button id="send-btn" type="submit"><i class="fa fa-send"></i></button>
+            <button id="survey-btn" type="button">Wypełnij ankietę</button>
         </div>
       <script>
-          function getResponse() {
-              let userText = $("#textInput").val();
-              let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
-              $("#textInput").val("");
-              $("#chatbox").append(userHtml);
-              document
-                .getElementById('textInput')
-                .scrollIntoView({block: 'start', behavior: 'smooth'});
-              $.get("/get", { msg: userText }).done(function(data) {
-              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-              $("#chatbox").append(botHtml);
-              document
-                .getElementById('textInput')
-                .scrollIntoView({block: 'start', behavior: 'smooth'});
-              });
+        function getResponse() {
+          let userText = $("#textInput").val();
+          let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
+          $("#textInput").val("");
+          if (userText.toLowerCase() === "end survey") {
+            endSurvey();
+            return;
           }
-          $("#textInput").keypress(function(e) {
-          //if enter key is pressed
-              if(e.which == 13) {
-                  getResponse();
-              }
+
+          if ($("#survey-btn").is(":visible")) {
+            // Survey is ongoing, send response to server
+            $.post("/survey", { response: userText }).done(function(data) {
+              // Display a confirmation message in the chat
+              let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+            $("#chatbox").append(confirmationHtml);
+            document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+            });
+          return;
+          }
+          $("#chatbox").append(userHtml);
+          document
+            .getElementById('textInput')
+            .scrollIntoView({block: 'start', behavior: 'smooth'});
+          $.get("/get", { msg: userText }).done(function(data) {
+          var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+          $("#chatbox").append(botHtml);
+          document
+            .getElementById('textInput')
+            .scrollIntoView({block: 'start', behavior: 'smooth'});
           });
-          $("#buttonInput").click(function() {
-              getResponse();
-          });
+        }
+
+        function endSurvey() {
+          // Hide the survey button
+          $("#survey-btn").hide();
+
+          // Display a message to indicate the survey has ended
+          let surveyEndHtml = '<div class="chat-message bot-message"><p class="botText"><span>Ankieta pomyślnie zakończona. Dziękuję za wzięcie udziału!</span></p></div>';
+          $("#chatbox").append(surveyEndHtml);
+          document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+        }
+
+        $("#textInput").keypress(function(e) {
+        //if enter key is pressed
+            if(e.which == 13) {
+                getResponse();
+            }
+        });
+        $("#buttonInput").click(function() {
+            getResponse();
+        });
+        $("#survey-btn").click(function() {
+            startSurvey();
+        });
+
+        function startSurvey() {
+          $("#messages").empty();
+
+          let surveyStartHtml = '<div class="chat-message bot-message"><p class="botText"><span>Rozpoczęto ankietę. Proszę odpowiedz na następujące pytania:</span></p></div>';
+          $("#chatbox").append(surveyStartHtml);
+          document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+
+          // Add survey questions as bot messages
+          let surveyQuestions = [
+              "Pytanie 1: Czy bolą cię oczy?",
+              // Add more questions as needed
+          ];
+          for (let i = 0; i < surveyQuestions.length; i++) {
+              let questionHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + surveyQuestions[i] + '</span></p></div>';
+              $("#chatbox").append(questionHtml);
+              document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          }
+        }
       </script>
     </div>
 </body>
