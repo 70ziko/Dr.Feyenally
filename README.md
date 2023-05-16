@@ -18,25 +18,21 @@ To run the chatbot web app locally, follow these steps:
    git clone https://github.com/your-username/chatbot-web-app.git
    cd chatbot-web-app
 
-    Install the dependencies:
+Install the dependencies:
 
-    bash
-
-pip install -r requirements.txt
+    pip install -r requirements.txt
 
 Set the OpenAI API key as an environment variable:
 
-bash
-
-export OPENAI_API_KEY=<your-api-key>
+    export OPENAI_API_KEY=<your-api-key>
 
 Run the application:
 
-bash
-
     flask run
+    or
+    python app.py
 
-    Open your web browser and visit http://localhost:5000 to access the chatbot web app.
+Open your web browser and visit http://localhost:5000 to access the chatbot web app.
 
 ## Usage
 
