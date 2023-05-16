@@ -2,10 +2,12 @@
 <html>
 <head>
     <title>Dr. Feyenally</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
@@ -15,51 +17,42 @@
       </div>
         <div class="chatbox" id="chatbox">
           <ul id="messages">
-          <div class="chat-message bot-message">
-            <p>Hello! How can I assist you?</p>
-          </div>
-          <!-- <div class="user-message chat-message">
-            <p>Hello!</p>
-          </div> -->
+            <div class="chat-message bot-message">
+              <p class="botText"><span>Hello! How can I assist you?</span></p>
+            </div>
           </ul>
         </div>
-        <div class="user_input">
-          <form id="chat-form">
-            <input type="text" id="text_input" placeholder="Type here...">
-            <button id="send-btn" type="submit">Send</button>
-          </form>
+        <div class="userInput">
+            <input type="text" id="textInput" placeholder="Type here...">
+            <button id="send-btn" type="submit"><i class="fa fa-send"></i></button>
         </div>
-      
-<!--       
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body> -->
-        <script>
-            function getResponse() {
-                console.log("JS załączony")
-                let userText = $("#text_input").val();
-                let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
-                $("#text_input").val("");
-                $("#chatbox").append(userHtml);
-                document.getElementById('text_input').scrollIntoView({block: 'start', behavior: 'smooth'});
-                $.get("/get", { msg: userText }).done(function(data) {
-                var botHtml = '<p class="botText"><span>' + data + '</span></p>';
-                $("#chatbox").append(botHtml);
-                document.getElementById('text_input').scrollIntoView({block: 'start', behavior: 'smooth'});
-        });
-        }
-            $("#text_input").keypress(function(e) {
-            //if enter key is pressed
-                if(e.which == 13) {
-                    getResponse();
-                }
-            });
-            $("#buttonInput").click(function() {
-                getResponse();
-            });
-            </script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script>
+          function getResponse() {
+              let userText = $("#textInput").val();
+              let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
+              $("#textInput").val("");
+              $("#chatbox").append(userHtml);
+              document
+                .getElementById('textInput')
+                .scrollIntoView({block: 'start', behavior: 'smooth'});
+              $.get("/get", { msg: userText }).done(function(data) {
+              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+              $("#chatbox").append(botHtml);
+              document
+                .getElementById('textInput')
+                .scrollIntoView({block: 'start', behavior: 'smooth'});
+              });
+          }
+          $("#textInput").keypress(function(e) {
+          //if enter key is pressed
+              if(e.which == 13) {
+                  getResponse();
+              }
+          });
+          $("#buttonInput").click(function() {
+              getResponse();
+          });
+      </script>
     </div>
 </body>
 </html>
