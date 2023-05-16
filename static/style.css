@@ -15,7 +15,7 @@
     padding: 10px;
   }
   
-  .chat-body {
+  .chatbox {
     padding: 10px;
     overflow-y: scroll;
     flex: 1;
@@ -37,7 +37,7 @@
     padding: 10px;
   }
   
-  #user-input {
+  #user_input {
     width: 80%;
     padding: 10px;
     margin-right: 10px;

@@ -1,28 +1,65 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Dr. Feyenally</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  </head>
-  <body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
     <div class="chat-window">
       <div class="chat-header">
         <h2>Dr. Feyenally</h2>
       </div>
-        <div class="chat-body" id="chat-body">
-          <ul id="messages"></ul> <!-- Add this line -->
+        <div class="chatbox" id="chatbox">
+          <ul id="messages">
           <div class="chat-message bot-message">
             <p>Hello! How can I assist you?</p>
           </div>
+          <!-- <div class="user-message chat-message">
+            <p>Hello!</p>
+          </div> -->
+          </ul>
         </div>
-        <div class="chat-footer">
+        <div class="user_input">
           <form id="chat-form">
-            <input type="text" id="message-input" placeholder="Type here...">
+            <input type="text" id="text_input" placeholder="Type here...">
             <button id="send-btn" type="submit">Send</button>
           </form>
         </div>
-      </div>
       
+<!--       
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body>
+  </body> -->
+        <script>
+            function getResponse() {
+                console.log("JS załączony")
+                let userText = $("#text_input").val();
+                let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+                $("#text_input").val("");
+                $("#chatbox").append(userHtml);
+                document.getElementById('text_input').scrollIntoView({block: 'start', behavior: 'smooth'});
+                $.get("/get", { msg: userText }).done(function(data) {
+                var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+                $("#chatbox").append(botHtml);
+                document.getElementById('text_input').scrollIntoView({block: 'start', behavior: 'smooth'});
+        });
+        }
+            $("#text_input").keypress(function(e) {
+            //if enter key is pressed
+                if(e.which == 13) {
+                    getResponse();
+                }
+            });
+            $("#buttonInput").click(function() {
+                getResponse();
+            });
+            </script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </div>
+</body>
 </html>
