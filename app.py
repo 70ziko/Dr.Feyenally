@@ -13,9 +13,10 @@ def index():
 @app.route("/get")
 def get_bot_response():
     user_text = request.args.get('msg')
-    response = openai.Completion.create(
-        engine = "davinci",
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
         prompt = user_text,
+        messages = [],
         max_tokens = 60,
         n = 1,
         stop = None,
@@ -35,7 +36,7 @@ def receive_survey():
     # ...
 
     # Return a response to the client
-    return "Thank you for completing the survey!"
+    return "Dziękuję za wypełnienie ankiety!"
 
 
 if __name__ == "__main__":

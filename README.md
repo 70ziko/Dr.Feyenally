@@ -1,4 +1,4 @@
-# Chatbot Web App
+# Dr. Feyenally - opthology best chatbot
 
 This is a chatbot web application built using Flask and powered by OpenAI. It allows users to have interactive conversations with the chatbot and also includes a survey feature.
 

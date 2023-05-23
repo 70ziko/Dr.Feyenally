@@ -39,7 +39,7 @@
             return;
           }
 
-          if ($("#survey-btn").is(":visible")) {
+          if ($("#survey-btn").is(":visible")) {        // Należy zmienić tu logikę sprawdzania czy trwa ankieta
             // Survey is ongoing, send response to server
             $.post("/survey", { response: userText }).done(function(data) {
               // Display a confirmation message in the chat
