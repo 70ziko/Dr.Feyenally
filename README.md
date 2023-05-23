@@ -15,7 +15,7 @@ To run the chatbot web app locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/chatbot-web-app.git
+   git clone https://github.com/70ziko/Dr.Feyenally.git
    cd chatbot-web-app
 
 Install the dependencies:
