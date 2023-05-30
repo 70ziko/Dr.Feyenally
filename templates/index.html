@@ -22,6 +22,7 @@
               <p class="botText"><span>Hej! Jestem Dr. Feyenally i odpowiem na wszystkie twoje pytania związane z okulistyką.  
                 Zachęcam do wypełnienia krótkiej ankiety, która pozwoli mnie oraz zespołowi Feyenally pomóc w Twoich problemach ze wzrokiem :)</span></p>
             </div>
+
           </ul>
         </div>
         <div class="userInput">
@@ -29,6 +30,7 @@
             <button id="send-btn" type="submit"><i class="fa fa-send"></i></button>
             <button id="survey-btn" type="button">Wypełnij ankietę</button>
         </div>
+        <!-- -----------------------SCRIPT START---------------------------- -->
       <script>
         function getResponse() {
           let userText = $("#textInput").val();
@@ -53,9 +55,11 @@
           document
             .getElementById('textInput')
             .scrollIntoView({block: 'start', behavior: 'smooth'});
+
           $.get("/get", { msg: userText }).done(function(data) {
           var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
           $("#chatbox").append(botHtml);
+          
           document
             .getElementById('textInput')
             .scrollIntoView({block: 'start', behavior: 'smooth'});
