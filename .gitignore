@@ -6,3 +6,6 @@ db.sqlite3
 Feyenally - termin 4.pptx
 .openai_key
 __pycache__
+.env
+.key
+.venv

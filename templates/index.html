@@ -39,7 +39,7 @@
             return;
           }
 
-          if ($("#survey-btn").is(":visible")) {        // Należy zmienić tu logikę sprawdzania czy trwa ankieta
+          if ($("#end-survey-btn").is(":visible")) {        // Należy zmienić tu logikę sprawdzania czy trwa ankieta
             // Survey is ongoing, send response to server
             $.post("/survey", { response: userText }).done(function(data) {
               // Display a confirmation message in the chat
@@ -84,10 +84,15 @@
         $("#survey-btn").click(function() {
             startSurvey();
         });
+        $("#end-survey-btn").click(function() {
+            endSurvey();
+        });
 
         function startSurvey() {
           $("#messages").empty();
-
+          $("#survey-btn").hide();
+          $("#end-survey-btn").show();
+          
           let surveyStartHtml = '<div class="chat-message bot-message"><p class="botText"><span>Rozpoczęto ankietę. Proszę odpowiedz na następujące pytania:</span></p></div>';
           $("#chatbox").append(surveyStartHtml);
           document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});

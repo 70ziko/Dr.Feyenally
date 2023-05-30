@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 import openai
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -15,14 +18,16 @@ def get_bot_response():
     user_text = request.args.get('msg')
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
-        prompt = user_text,
-        messages = [],
+        # prompt = user_text,
+        messages = [{"role": "system", "content": "You are an AI designed to help people fill out surveys and answer questions related to ophthalmology. You specialize in ophthalmology surveys and helping people answer questions about eye problems. You are very good at your job. You are friendly and helpful."},
+                    { "role": "user", "content": user_text}],
         max_tokens = 60,
         n = 1,
         stop = None,
-        temperature = 0.7,
+        temperature = 0.8,
     )
 
+    # Extract response text from API response
     response_text = response.choices[0].text.strip()
 
     return str(response_text)
