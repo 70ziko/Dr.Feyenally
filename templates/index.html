@@ -29,6 +29,7 @@
             <input type="text" id="textInput" placeholder="Pisz tutaj...">
             <button id="send-btn" type="submit"><i class="fa fa-send"></i></button>
             <button id="survey-btn" type="button">Wypełnij ankietę</button>
+            <button id="end-survey-btn" type="button" style="display: none;">Zakończ ankietę</button>
         </div>
         <!-- -----------------------SCRIPT START---------------------------- -->
       <script>
@@ -69,6 +70,7 @@
         function endSurvey() {
           // Hide the survey button
           $("#survey-btn").hide();
+          $("#end-survey-btn").hide();
 
           // Display a message to indicate the survey has ended
           let surveyEndHtml = '<div class="chat-message bot-message"><p class="botText"><span>Ankieta pomyślnie zakończona. Dziękuję za wzięcie udziału!</span></p></div>';
@@ -105,6 +107,9 @@
           let surveyQuestions = [
               "Pytanie 1: Czy bolą cię oczy?",
               // Add more questions as needed
+              // "Pytanie 2: Czy masz problemy ze wzrokiem?",
+              // "Pytanie 3: Czy masz problemy z widzeniem w ciemności?",
+              // "Pytanie 4: Czy masz problemy z widzeniem w jasności?",
           ];
           for (let i = 0; i < surveyQuestions.length; i++) {
               let questionHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + surveyQuestions[i] + '</span></p></div>';
