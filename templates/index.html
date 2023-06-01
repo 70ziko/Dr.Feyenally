@@ -33,37 +33,53 @@
         </div>
         <!-- -----------------------SCRIPT START---------------------------- -->
       <script>
+        let messages = [
+          {
+            role: "system",
+            content:
+              "You are an AI designed to help people fill out surveys and answer questions related to ophthalmology. You specialize in ophthalmology surveys and helping people answer questions about eye problems. You are very good at your job. You are friendly and helpful.",
+          },
+        ];
+
         function getResponse() {
           let userText = $("#textInput").val();
           let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
           $("#textInput").val("");
+
+          // Update the messages array with the user's message
+          messages.push({ role: "user", content: userText });
+
           if (userText.toLowerCase() === "end survey") {
             endSurvey();
             return;
           }
 
-          if ($("#end-survey-btn").is(":visible")) {        // Należy zmienić tu logikę sprawdzania czy trwa ankieta
-            // Survey is ongoing, send response to server
-            $.post("/survey", { response: userText }).done(function(data) {
-              // Display a confirmation message in the chat
-              let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-            $("#chatbox").append(confirmationHtml);
-            document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-            });
-          return;
-          }
-          $("#chatbox").append(userHtml);
-          document
-            .getElementById('textInput')
-            .scrollIntoView({block: 'start', behavior: 'smooth'});
+          //   // SUURVEYYYY
+          // if ($("#survey-btn").is(":visible")) {        // Należy zmienić tu logikę sprawdzania czy trwa ankieta
+          //   $.post("/survey", { response: userText }).done(function(data) {
+          //     // Jakie confirmatioon wtf
+          //     let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+          //   $("#chatbox").append(confirmationHtml);
 
-          $.get("/get", { msg: userText }).done(function(data) {
-          var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-          $("#chatbox").append(botHtml);
-          
-          document
-            .getElementById('textInput')
-            .scrollIntoView({block: 'start', behavior: 'smooth'});
+          //   document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          //   });
+          //   return;
+          // }
+
+          $("#chatbox").append(userHtml);
+          document.getElementById("textInput").scrollIntoView({ block: "start", behavior: "smooth" });
+
+          // Send the messages array to the Flask endpoint
+          $.ajax({
+            url: "/get",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ messages: messages }),
+            success: function (data) {
+              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+              $("#chatbox").append(botHtml);
+              document.getElementById("textInput").scrollIntoView({ block: "start", behavior: "smooth" });
+            },
           });
         }
 
@@ -78,21 +94,27 @@
           document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
         }
 
-        $("#textInput").keypress(function(e) {
-        //if enter key is pressed
-            if(e.which == 13) {
-                getResponse();
-            }
-        });
-        $("#buttonInput").click(function() {
+        // Event Listeners
+        $(document).ready(function () {
+          $("#textInput").keydown(function (event) {
+          // If the user presses the "Enter" key
+          if (event.key === "Enter") {
+            event.preventDefault(); // Prevent the default action (e.g., adding a new line)
             getResponse();
+          }
         });
-        $("#survey-btn").click(function() {
-            startSurvey();
+
+          $("#send-btn").click(function () {
+            getResponse();
+          });
+          $("#survey-btn").click(function() {
+              startSurvey();
+          });
+          $("#end-survey-btn").click(function() {
+              endSurvey();
+          });
         });
-        $("#end-survey-btn").click(function() {
-            endSurvey();
-        });
+        
 
         function startSurvey() {
           $("#messages").empty();

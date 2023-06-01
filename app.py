@@ -23,26 +23,26 @@ parameters = {
     "stop": ["\n", " Human:", " AI:"]
 }
 
-@app.route("/get")
+@app.route("/get", methods=['POST'])
 def get_bot_response():
-    user_text = request.args.get('msg')
+    data = request.get_json()
+    messages = data["messages"]
+    print(messages)
+    # user_text = messages[-1]["content"]
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",
-        messages = [{"role": "system", "content": "You are an AI designed to help people fill out surveys and answer questions related to ophthalmology. You specialize in ophthalmology surveys and helping people answer questions about eye problems. You are very good at your job. You are friendly and helpful."},
-                    { "role": "user", "content": user_text}],
+        messages = messages,
         max_tokens = 60,
         n = 1,
         presence_penalty = 0,
         frequency_penalty = 0,
-        top_p = 1,
         stop = None,
         temperature = 0.8,
     )
 
     # Extract response text from API response
-    response_text = response.choices[0].text.strip()
-
-    return str(response_text)
+    response = response.choices[0].message.content.strip()
+    return str(response)
 
 @app.route("/survey", methods=["POST"])
 def receive_survey():
@@ -54,9 +54,6 @@ def receive_survey():
 
     # Return a response to the client
     return "Dziękuję za wypełnienie ankiety!"
-
-def receive_messages():
-    pass
 
 
 if __name__ == "__main__":
