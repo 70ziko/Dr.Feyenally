@@ -58,16 +58,18 @@
             return;
           }
 
-          //  // SUURVEYYYY
+           // SUURVEYYYY
           // if ($("#end-survey-btn").is(":visible")) {        
-          //   $.post("/survey", { response: userText }).done(function(data) {
-          //     // Jakie confirmatioon wtf
-          //     let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-          //   $("#chatbox").append(confirmationHtml);
-
-          //   document.getElementById('textInput').scrollIntoView({block: 'end', behavior: 'smooth'});
-          //   });
-          //   return;
+            // $.post("/survey", { response: userText }).done(function(data) {
+              // Jakie confirmatioon wtf
+              // renderSurvey();
+              // let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+            // $("#chatbox").append(confirmationHtml);
+            // document.getElementById('#chatbox').append;
+            // });
+            // document.getElementById('textInput').scrollIntoView({block: 'end', behavior: 'smooth'});
+            // }
+            // return;
           // }
 
           $("#chatbox").append(userHtml);
@@ -106,14 +108,15 @@
             event.preventDefault(); // Prevent the default action (e.g., adding a new line)
             getResponse();
           }
+          $("#survey-btn").click(function() {
+              renderSurvey();
+          });
         });
 
           $("#send-btn").click(function () {
             getResponse();
           });
-          $("#survey-btn").click(function() {
-              startSurvey();
-          });
+          
           $("#end-survey-btn").click(function() {
               endSurvey();
           });
@@ -131,7 +134,17 @@
           }
 
           // Do something with the selected answers (e.g., send them to a server)
-          console.log('Selected Answers:', selectedAnswers);
+          $.ajax({
+            url: "/get",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ ans: selectedAnswers }),
+            success: function (data) {
+              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+              $("#chatbox").append(botHtml);
+              document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+            },
+          });
         }
 
         // Function to render the survey questions and answers
@@ -144,9 +157,9 @@
             var answers = survey[i].answers;
 
             // Create question element
-            var questionElement = document.createElement('p');
+            // var questionElement = document.createElement('p');
             questionElement.textContent = question;
-            surveyContainer.appendChild(questionElement);
+            surveyContainer.appendChild('#chatbox');
 
             // Create answer elements
             for (var j = 0; j < answers.length; j++) {

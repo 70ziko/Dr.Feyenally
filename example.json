@@ -1,0 +1,27 @@
+{
+  "user_id": "1234567890",
+  "survey_answers": {
+    "question1": "Answer 1",
+    "question2": "Answer 2",
+    "question3": "Answer 3"
+  },
+  "messages": [
+    {
+      "sender": "User",
+      "content": "Hello, I have a question."
+    },
+    {
+      "sender": "Assistant",
+      "content": "Sure, what would you like to know?"
+    },
+    {
+      "sender": "User",
+      "content": "How can I reset my password?"
+    },
+    {
+      "sender": "Assistant",
+      "content": "To reset your password, please go to the settings page and click on the 'Reset Password' button."
+    }
+  ]
+}
+
