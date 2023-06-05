@@ -1,8 +1,8 @@
 .chat-window {
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 400px;
-    height: 500px;
+    width: 500px;
+    height: 600px;
     margin: 50px auto;
     display: flex;
     flex-direction: column;
@@ -10,56 +10,113 @@
   }
   
   .chat-header {
-    background-color: #007bff;
+    background-color: #5368fd;
     color: #fff;
     padding: 10px;
   }
   
   .chatbox {
-    padding: 10px;
+    padding: 15px;
     overflow-y: scroll;
     flex: 1;
   }
   
   .chat-message {
-    margin-bottom: 10px;
+    display: inline-block;
+    max-width: 75%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    position: relative;
+    margin-bottom: 20px;
   }
-  
+
   .bot-message {
-    text-align: left;
+    float: left;
+    left: 40px;
+    text-align: justify;
+    clear: both;
+  }
+
+  .bot-message::before {
+    content: "";
+    position: absolute;
+    bottom: -30px;
+    left: -55px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: url('https://allodocteurplus.com/Images/medgen.png');
+    background-size: cover;
+    margin-right: 10px;
+  }
+
+  .bot-message::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 5%;
+    border-width: 15px 15px 0 0;
+    border-style: solid;
+    border-color: #ccc transparent;
+    display: block;
+    width: 0;
   }
   
   .user-message {
-    text-align: right;
+    background-color: #F0F8FA;
+    float: right;
+    text-align: justify;
+    clear: both;
+  }
+
+  .user-message::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    right: 5%;
+    border-width: 15px 0 0 15px;
+    border-style: solid;
+    border-color: #ccc transparent;
+    display: block;
+    width: 0;
   }
   
   .chat-footer {
-    padding: 10px;
+    padding: 50px;
   }
   
-  #user_input {
-    width: 80%;
+  .userInput {
+    width: 100%;
     padding: 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border: none;
     font-size: 16px;
+  }
+
+  #textInput {
+    width: 60%;
   }
   
   button[type="submit"] {
     padding: 10px;
     border-radius: 5px;
     border: none;
-    background-color: #007bff;
+    background-color: #5368fd;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
     position: relative;
-    right: 0px;
+    right: 0;
+  }
+
+  button[type="button"]{
+    border: 1px solid #404040;
+    border-radius: 5px;
   }
   
-  button[type="submit"]:hover {
-    background-color: #0069d9;
+  button[type="button"]:hover {
+    position: relative;
+    background-color: #66b2ff;
+    border: 1px solid #0066cc;
+    color: white;
   }
