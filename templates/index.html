@@ -5,7 +5,7 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -23,7 +23,6 @@
               <p class="botText"><span>
                 Zachęcam do wypełnienia krótkiej ankiety, która pozwoli mnie oraz zespołowi Feyenally pomóc w Twoich problemach ze wzrokiem :)</span></p>
             </div>
-            <ul id="messages"></ul>
         </div>
         <div class="userInput">
             <input type="text" id="textInput" placeholder="Pisz tutaj...">
@@ -103,11 +102,10 @@
             event.preventDefault(); // Prevent the default action (e.g., adding a new line)
             getResponse();
           }
-          $("#survey-btn").click(function() {
-              renderSurvey();
-          });
         });
-
+        $("#survey-btn").click(function() {
+            renderSurvey();
+        });
           $("#send-btn").click(function () {
             getResponse();
           });
@@ -142,7 +140,7 @@
           });
         }
         
-        const eyeQuestions = {
+        const survey = {
           "Do your eyes hurt?": {
             question: {
               en: "Do your eyes hurt?",
@@ -219,41 +217,35 @@
         // Function to render the survey questions and answers
         function renderSurvey() {
           // surveyContainer.innerHTML = ''; // Clear the survey container
-
+          console.log(survey.length)
           // Create and append the survey questions and answers
           for (var i = 0; i < survey.length; i++) {
             var question = survey[i].question;
             var answers = survey[i].answers;
 
             // Create question element
-            // var questionElement = document.createElement('p');
-            // questionElement.textContent = question;
-            // surveyContainer.appendChild('#chatbox');
-            var surveyHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + question + '</span></p></div>';
-              $("#chatbox").append(surveyHtml);
-
-            // document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+            var surveyHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + "question.pl" + '</span></p></div>';
+            console.log(question.pl)
+            $("#chatbox").append(surveyHtml);
 
             // Create answer elements
             for (var j = 0; j < answers.length; j++) {
-              var answer = answers[j];
+              var answer = answers[j].answer;
               var answerLabel = document.createElement('label');
               var answerInput = document.createElement('input');
               answerInput.type = 'radio';
               answerInput.name = 'answer-' + i;
-              answerInput.value = answer;
+              answerInput.value = answer.en;
 
               answerLabel.appendChild(answerInput);
-              answerLabel.appendChild(document.createTextNode(answer));
-              surveyContainer.appendChild(answerLabel);
+              answerLabel.appendChild(document.createTextNode(answer.en));
+              $("#chatbox").append(answerLabel);
             }
           }
 
           // Create submit button
-          var submitButton = document.createElement('button');
-          submitButton.textContent = 'Submit';
-          submitButton.addEventListener('click', submitSurvey);
-          surveyContainer.appendChild(submitButton);
+          var submitButton = '<button onclick="submitSurvey()">Submit</button>';
+          $("#chatbox").append(submitButton);
         }
       </script>
     </div>
