@@ -68,6 +68,10 @@
 
           $("#chatbox").append(userHtml);
           document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+            
+          var typingHtml = '<div class="chat-message bot-message typing"><p class="message-content"><span class="dot"></span><span class="dot"></span><span class="dot"></span></p></div>';
+          $("#chatbox").append(typingHtml);
+          document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
 
           // Send the messages array to the Flask endpoint
           $.ajax({
@@ -76,6 +80,7 @@
             contentType: "application/json",
             data: JSON.stringify({ messages: messages }),
             success: function (data) {
+              $(".typing").remove();
               var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
               $("#chatbox").append(botHtml);
               document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
