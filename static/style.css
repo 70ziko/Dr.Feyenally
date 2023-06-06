@@ -62,6 +62,33 @@
     display: block;
     width: 0;
   }
+
+  .bot-message.typing .message-content {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .bot-message.typing .message-content .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 4px;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
   
   .user-message {
     background-color: #F0F8FA;
