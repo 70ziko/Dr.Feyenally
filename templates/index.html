@@ -13,7 +13,7 @@
 <body>
     <div class="chat-window">
       <div class="chat-header">
-        <h2>Dr. F<b>eye</b>nally</h2>
+        <h2>Dr. Feyenally</h2>
       </div>
         <div class="chatbox" id="chatbox">
             <div class="chat-message bot-message">
@@ -31,219 +31,228 @@
             <button id="end-survey-btn" type="button" style="display: none;">Zakończ ankietę</button>
         </div>
         <!-- -----------------------SCRIPT START---------------------------- -->
-      <script>
-        let messages = [
-          {
-            role: "system",
-            content:
-            "Jesteś okulistą AI zaprojektowanym, aby odpowiadać na pytania związane z okulistyką, pomagać ludziom wypełniać ankiety oraz pomagać w problemach z aplikacją. Specjalizujesz się w ankietach okulistycznych i pomagasz ludziom odpowiadać na pytania dotyczące problemów ze wzrokiem. Jesteś bardzo dobry w swojej pracy. Jesteś przyjazny i pomocny. Odpowiadaj jak najkrótszymi odpowiedziami"},
-          {
-            role: "assistant",
-            content:
-              "Hej! Jestem Dr. Feyenally i odpowiem na wszystkie twoje pytania związane z okulistyką. Zachęcam do wypełnienia krótkiej ankiety, która pozwoli mnie oraz zespołowi Feyenally pomóc w Twoich problemach ze wzrokiem :)"
-          },
-        ];
-
-        function getResponse() {
-          let userText = $("#textInput").val();
-          let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
-          $("#textInput").val("");
-
-          // Update the messages array with the user's message
-          messages.push({ role: "user", content: userText });
-
-          $("#chatbox").append(userHtml);
-          document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
-            
-          var typingHtml = '<div class="chat-message bot-message typing"><p class="message-content"><span class="dot"></span><span class="dot"></span><span class="dot"></span></p></div>';
-          $("#chatbox").append(typingHtml);
-          document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
-
-          // Send the messages array to the Flask endpoint
-          $.ajax({
-            url: "/get",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ messages: messages }),
-            success: function (data) {
-              $(".typing").remove();
-              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-              $("#chatbox").append(botHtml);
-              document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
-              //messages.push({ role: "assistant", content: data });
+        <script>
+          let messages = [
+            {
+              role: "system",
+              content:
+              "Jesteś okulistą AI zaprojektowanym, aby odpowiadać na pytania związane z okulistyką, pomagać ludziom wypełniać ankiety oraz pomagać w problemach z aplikacją. Specjalizujesz się w ankietach okulistycznych i pomagasz ludziom odpowiadać na pytania dotyczące problemów ze wzrokiem. Jesteś bardzo dobry w swojej pracy. Jesteś przyjazny i pomocny. Odpowiadaj jak najkrótszymi odpowiedziami"},
+            {
+              role: "assistant",
+              content:
+                "Hej! Jestem Dr. Feyenally i odpowiem na wszystkie twoje pytania związane z okulistyką. Zachęcam do wypełnienia krótkiej ankiety, która pozwoli mnie oraz zespołowi Feyenally pomóc w Twoich problemach ze wzrokiem :)"
             },
-          });
-        }
+          ];
 
-        function endSurvey() {
-          // Hide the survey button
-          $("#survey-btn").hide();
-          $("#end-survey-btn").hide();
+          function getResponse() {
+            let userText = $("#textInput").val();
+            let userHtml = '<div class="chat-message user-message"><p class="userText"><span>' + userText + '</span></p></div>';
+            $("#textInput").val("");
 
-          // Display a message to indicate the survey has ended
-          let surveyEndHtml = '<div class="chat-message bot-message"><p class="botText"><span>Ankieta pomyślnie zakończona. Dziękuję za wzięcie udziału!</span></p></div>';
-          $("#chatbox").append(surveyEndHtml);
-          document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-        }
+            // Update the messages array with the user's message
+            messages.push({ role: "user", content: userText });
 
-        // Event Listeners
-        $(document).ready(function () {
-          $("#textInput").keydown(function (event) {
-          // If the user presses the "Enter" key
-          if (event.key === "Enter") {
-            event.preventDefault(); // Prevent the default action (e.g., adding a new line)
-            getResponse();
+            $("#chatbox").append(userHtml);
+            document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+              
+            var typingHtml = '<div class="chat-message bot-message typing"><p class="message-content"><span class="dot"></span><span class="dot"></span><span class="dot"></span></p></div>';
+            $("#chatbox").append(typingHtml);
+            document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+
+            // Send the messages array to the Flask endpoint
+            $.ajax({
+              url: "/get",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ messages: messages }),
+              success: function (data) {
+                $(".typing").remove();
+                var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+                $("#chatbox").append(botHtml);
+                document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+                //messages.push({ role: "assistant", content: data });
+              },
+            });
           }
-        });
-        $("#survey-btn").click(function() {
-            renderSurvey();
-        });
-          $("#send-btn").click(function () {
-            getResponse();
+
+          function endSurvey() {
+            // Hide the survey button
+            $("#survey-btn").show();
+            $("#end-survey-btn").hide();
+            $(".chat-message").show();
+
+            // Display a message to indicate the survey has ended
+            let surveyEndHtml = '<div class="chat-message bot-message"><p class="botText"><span>Ankieta pomyślnie zakończona. Dziękuję za wzięcie udziału!</span></p></div>';
+            $("#chatbox").append(surveyEndHtml);
+            document.getElementById('textInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+            $("#survey-container").remove();
+          }
+
+          // Event Listeners
+          $(document).ready(function () {
+            $("#textInput").keydown(function (event) {
+            // If the user presses the "Enter" key
+            if (event.key === "Enter") {
+              event.preventDefault(); // Prevent the default action (e.g., adding a new line)
+              getResponse();
+            }
+          });
+          $("#survey-btn").click(function() {
+              renderSurvey();
+          });
+            $("#send-btn").click(function () {
+              getResponse();
+            });
+            
+            $("#end-survey-btn").click(function() {
+              endSurvey();
+            });
           });
           
-          $("#end-survey-btn").click(function() {
-              endSurvey();
-          });
-        });
-        
-        // Function to handle the survey submission
-        function submitSurvey() {
-          // Get all the selected answers
-          var selectedAnswers = [];
-          var answerElements = document.getElementsByClassName('answer');
-          for (var i = 0; i < answerElements.length; i++) {
-            if (answerElements[i].checked) {
-              selectedAnswers.push(answerElements[i].value);
+          // Function to handle the survey submission
+          function submitSurvey() {
+            // Get all the selected answers
+            var selectedAnswers = [];
+            var answerElements = document.getElementsByClassName('answer');
+            for (var i = 0; i < answerElements.length; i++) {
+              if (answerElements[i].checked) {
+                selectedAnswers.push(answerElements[i].value);
+              }
             }
+
+            // Do something with the selected answers (e.g., send them to a server)
+            $.ajax({
+              url: "/get",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ answers: selectedAnswers }),
+              success: function (data) {
+                var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
+                $("#chatbox").append(botHtml);
+                document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+              },
+            });
           }
+          
+          const survey = [
+              {
+              question: {
+                en: "Do your eyes hurt?",
+                pl: "Czy bolą cię oczy?"
+              },
+              answers: [
+                { answer: { en: "No", pl: "Nie" } },
+                { answer: { en: "Yes", pl: "Tak" } }
+              ]
+              },
+              {
+              question: {
+                en: "Do you wear glasses?",
+                pl: "Czy nosisz okulary?"
+              },
+              answers: [
+                { answer: { en: "No", pl: "Nie" } },
+                { answer: { en: "Yes - shortsighted", pl: "Tak - krótkowzroczność"} },
+                { answer: { en: "Yes - longsighted", pl: "Tak - dalekowzorczność" } }
+              ]},
+              
+              {question: {
+                en: "Do you have any eye disorders?",
+                pl: "Czy masz jakieś schorzenia oczu?"
+              },
+              answers: [
+                { answer: { en: "No", pl: "Nie" } },
+                { answer: { en: "Yes", pl: "Tak" } } //Dodać możliwość wpisania jakie?
+              ]},
+            ];
+            // "Are you taking eye medications?": {
+            //   question: {
+            //     en: "Are you taking eye medications?",
+            //     pl: "Czy przyjmujesz leki do oczu?"
+            //   },
+            //   answers: [
+            //     { answer: { en: "No", pl: "Nie" } },
+            //     { answer: { en: "Yes", pl: "Tak" } } //Jakie?
+            //   ]
+            // },
+            // "Do you have allergies?": {
+            //   question: {
+            //     en: "Do you have allergies?",
+            //     pl: "Czy masz alergie?"
+            //   },
+            //   answers: [
+            //     { answer: { en: "No", pl: "Nie" } },
+            //     { answer: { en: "Yes", pl: "Tak" } } // Jakie?
+            //   ]
+            // },
+            // "Do you have photophobia?": {
+            //   question: {
+            //     en: "Do you have photophobia?",
+            //     pl: "Czy masz światłowstręt?"
+            //   },
+            //   answers: [
+            //     { answer: { en: "No", pl: "Nie" } },
+            //     { answer: { en: "Yes", pl: "Tak" } }
+            //   ]
+            // },
+            // "Do you have symptoms of a dry eye?": {
+            //   question: {
+            //     en: "Do you have symptoms of a dry eye?",
+            //     pl: "Czy masz uczucie piasku pod powiekami (lub suchego oka)?"
+            //   },
+            //   answers: [
+            //     { answer: { en: "No", pl: "Nie" } },
+            //     { answer: { en: "Yes", pl: "Tak" } }
+            //   ]
+            // }
+          // ];
 
-          // Do something with the selected answers (e.g., send them to a server)
-          $.ajax({
-            url: "/get",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ answers: selectedAnswers }),
-            success: function (data) {
-              var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-              $("#chatbox").append(botHtml);
-              document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
-            },
-          });
-        }
-        
-        const survey = [
-            {
-            question: {
-              en: "Do your eyes hurt?",
-              pl: "Czy bolą cię oczy?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } }
-            ]
-            },
-            {
-            question: {
-              en: "Do you wear glasses?",
-              pl: "Czy nosisz okulary?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes - shortsighted", pl: "Tak - krótkowzroczność"} },
-              { answer: { en: "Yes - longsighted", pl: "Tak - dalekowzorczność" } }
-            ]},
-            
-            {question: {
-              en: "Do you have any eye disorders?",
-              pl: "Czy masz jakieś schorzenia oczu?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } } //Dodać możliwość wpisania jakie?
-            ]},
-          ];
-          // "Are you taking eye medications?": {
-          //   question: {
-          //     en: "Are you taking eye medications?",
-          //     pl: "Czy przyjmujesz leki do oczu?"
-          //   },
-          //   answers: [
-          //     { answer: { en: "No", pl: "Nie" } },
-          //     { answer: { en: "Yes", pl: "Tak" } } //Jakie?
-          //   ]
-          // },
-          // "Do you have allergies?": {
-          //   question: {
-          //     en: "Do you have allergies?",
-          //     pl: "Czy masz alergie?"
-          //   },
-          //   answers: [
-          //     { answer: { en: "No", pl: "Nie" } },
-          //     { answer: { en: "Yes", pl: "Tak" } } // Jakie?
-          //   ]
-          // },
-          // "Do you have photophobia?": {
-          //   question: {
-          //     en: "Do you have photophobia?",
-          //     pl: "Czy masz światłowstręt?"
-          //   },
-          //   answers: [
-          //     { answer: { en: "No", pl: "Nie" } },
-          //     { answer: { en: "Yes", pl: "Tak" } }
-          //   ]
-          // },
-          // "Do you have symptoms of a dry eye?": {
-          //   question: {
-          //     en: "Do you have symptoms of a dry eye?",
-          //     pl: "Czy masz uczucie piasku pod powiekami (lub suchego oka)?"
-          //   },
-          //   answers: [
-          //     { answer: { en: "No", pl: "Nie" } },
-          //     { answer: { en: "Yes", pl: "Tak" } }
-          //   ]
-          // }
-        // ];
+          // Function to render the survey questions and answers
+          function renderSurvey() {
+            // Hide the survey button
+            $("#survey-btn").hide();
+            $("#end-survey-btn").show();
+            $(".chat-message").hide();
 
-        // Function to render the survey questions and answers
-        function renderSurvey() {
-          // Hide the survey button
-          $("#survey-btn").hide();
-          // Create and append the survey questions and answers
-          for (var i = 0; i < survey.length; i++) {
-            var question = survey[i].question.pl;
-            var answers = survey[i].answers;
-            console.log(survey[i].question.pl)
+            // Create and append the survey container
+            var surveyContainer = document.createElement('div');
+            surveyContainer.id = 'survey-container';
+            $("#chatbox").append(surveyContainer);
+            // Create and append the survey questions and answers
+            for (var i = 0; i < survey.length; i++) {
+              var question = survey[i].question.pl;
+              var answers = survey[i].answers;
+              console.log(survey[i].question.pl)
 
-            // Create question element
-            var surveyHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + survey[i].question.pl + '</span></p></div>';
-            $("#chatbox").append(surveyHtml);
+              // Create question element
+              var surveyHtml = '<div class="survey-question"><p class="survey-question-text"><span>' + survey[i].question.pl + '</span></p></div>';
+              $(surveyContainer).append(surveyHtml);
 
-            // Create answer elements
-            for (var j = 0; j < answers.length; j++) {
-              var answer = answers[j].answer;
-              var answerDiv = document.createElement('div');
-              var answerLabel = document.createElement('label');
-              var answerInput = document.createElement('input');
-              answerDiv.className = 'chat-message bot-message answer';
-              answerInput.type = 'radio';
-              answerInput.name = 'answer-' + i;
-              answerInput.value = answer.pl;
+              // Create answer elements
+              for (var j = 0; j < answers.length; j++) {
+                var answer = answers[j].answer;
+                var answerDiv = document.createElement('div');
+                var answerLabel = document.createElement('label');
+                var answerInput = document.createElement('input');
+                answerDiv.className = 'survey-answer';
+                answerInput.type = 'radio';
+                answerInput.name = 'answer-' + i;
+                answerInput.value = answer.pl;
 
-              answerDiv.appendChild(answerLabel);
-              answerLabel.appendChild(answerInput);
-              answerLabel.appendChild(document.createTextNode(answer.pl));
-              $("#chatbox").append(answerDiv);
+                answerDiv.appendChild(answerLabel);
+                answerLabel.appendChild(answerInput);
+                answerLabel.appendChild(document.createTextNode(answer.pl));
+                $(surveyContainer).append(answerDiv);
+              }
             }
-          }
 
-          // Create submit button
-          var submitBtn = document.createElement('button');
-          submitBtn.id = 'submit-btn';
-          submitBtn.innerHTML = 'Submit';
-          $("#chatbox").append(submitBtn);
-          }
-      </script>
+            // Create submit button
+            var submitBtn = document.createElement('button');
+            submitBtn.id = 'submit-btn';
+            submitBtn.innerHTML = 'Submit';
+            $(surveyContainer).append(submitBtn);
+            }
+        </script>
     </div>
 </body>
 </html>
