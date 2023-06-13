@@ -123,6 +123,23 @@
   #textInput {
     width: 60%;
   }
+
+  #survey-container {
+    background-color: #fff;
+    margin-top: 20px;
+  }
+  
+  .survey-question {
+    margin-bottom: 10px;
+  }
+  
+  .survey-question-text {
+    font-weight: bold;
+  }
+  
+  .survey-answer {
+    margin-bottom: 5px;
+  }
   
   button[type="submit"] {
     padding: 10px;
