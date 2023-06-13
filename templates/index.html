@@ -52,20 +52,6 @@
           // Update the messages array with the user's message
           messages.push({ role: "user", content: userText });
 
-           // SUURVEYYYY
-          // if ($("#end-survey-btn").is(":visible")) {        
-            // $.post("/survey", { response: userText }).done(function(data) {
-              // Jakie confirmatioon wtf
-              // renderSurvey();
-              // let confirmationHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
-            // $("#chatbox").append(confirmationHtml);
-            // document.getElementById('#chatbox').append;
-            // });
-            // document.getElementById('textInput').scrollIntoView({block: 'end', behavior: 'smooth'});
-            // }
-            // return;
-          // }
-
           $("#chatbox").append(userHtml);
           document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
             
@@ -84,6 +70,7 @@
               var botHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + data + '</span></p></div>';
               $("#chatbox").append(botHtml);
               document.getElementById("textInput").scrollIntoView({ block: "end", behavior: "smooth" });
+              //messages.push({ role: "assistant", content: data });
             },
           });
         }
@@ -145,8 +132,8 @@
           });
         }
         
-        const survey = {
-          "Do your eyes hurt?": {
+        const survey = [
+            {
             question: {
               en: "Do your eyes hurt?",
               pl: "Czy bolą cię oczy?"
@@ -155,8 +142,8 @@
               { answer: { en: "No", pl: "Nie" } },
               { answer: { en: "Yes", pl: "Tak" } }
             ]
-          },
-          "Do you wear glasses?": {
+            },
+            {
             question: {
               en: "Do you wear glasses?",
               pl: "Czy nosisz okulary?"
@@ -165,93 +152,99 @@
               { answer: { en: "No", pl: "Nie" } },
               { answer: { en: "Yes - shortsighted", pl: "Tak - krótkowzroczność"} },
               { answer: { en: "Yes - longsighted", pl: "Tak - dalekowzorczność" } }
-            ]
-          },
-          "Do you have any eye disorders?": {
-            question: {
+            ]},
+            
+            {question: {
               en: "Do you have any eye disorders?",
               pl: "Czy masz jakieś schorzenia oczu?"
             },
             answers: [
               { answer: { en: "No", pl: "Nie" } },
               { answer: { en: "Yes", pl: "Tak" } } //Dodać możliwość wpisania jakie?
-            ]
-          },
-          "Are you taking eye medications?": {
-            question: {
-              en: "Are you taking eye medications?",
-              pl: "Czy przyjmujesz leki do oczu?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } } //Jakie?
-            ]
-          },
-          "Do you have allergies?": {
-            question: {
-              en: "Do you have allergies?",
-              pl: "Czy masz alergie?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } } // Jakie?
-            ]
-          },
-          "Do you have photophobia?": {
-            question: {
-              en: "Do you have photophobia?",
-              pl: "Czy masz światłowstręt?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } }
-            ]
-          },
-          "Do you have symptoms of a dry eye?": {
-            question: {
-              en: "Do you have symptoms of a dry eye?",
-              pl: "Czy masz uczucie piasku pod powiekami (lub suchego oka)?"
-            },
-            answers: [
-              { answer: { en: "No", pl: "Nie" } },
-              { answer: { en: "Yes", pl: "Tak" } }
-            ]
-          }
-        };
+            ]},
+          ];
+          // "Are you taking eye medications?": {
+          //   question: {
+          //     en: "Are you taking eye medications?",
+          //     pl: "Czy przyjmujesz leki do oczu?"
+          //   },
+          //   answers: [
+          //     { answer: { en: "No", pl: "Nie" } },
+          //     { answer: { en: "Yes", pl: "Tak" } } //Jakie?
+          //   ]
+          // },
+          // "Do you have allergies?": {
+          //   question: {
+          //     en: "Do you have allergies?",
+          //     pl: "Czy masz alergie?"
+          //   },
+          //   answers: [
+          //     { answer: { en: "No", pl: "Nie" } },
+          //     { answer: { en: "Yes", pl: "Tak" } } // Jakie?
+          //   ]
+          // },
+          // "Do you have photophobia?": {
+          //   question: {
+          //     en: "Do you have photophobia?",
+          //     pl: "Czy masz światłowstręt?"
+          //   },
+          //   answers: [
+          //     { answer: { en: "No", pl: "Nie" } },
+          //     { answer: { en: "Yes", pl: "Tak" } }
+          //   ]
+          // },
+          // "Do you have symptoms of a dry eye?": {
+          //   question: {
+          //     en: "Do you have symptoms of a dry eye?",
+          //     pl: "Czy masz uczucie piasku pod powiekami (lub suchego oka)?"
+          //   },
+          //   answers: [
+          //     { answer: { en: "No", pl: "Nie" } },
+          //     { answer: { en: "Yes", pl: "Tak" } }
+          //   ]
+          // }
+        // ];
 
         // Function to render the survey questions and answers
         function renderSurvey() {
-          // surveyContainer.innerHTML = ''; // Clear the survey container
-          console.log(survey.length)
+          // Hide the survey button
+          $("#survey-btn").hide();
           // Create and append the survey questions and answers
           for (var i = 0; i < survey.length; i++) {
-            var question = survey[i].question;
+            var question = survey[i].question.pl;
             var answers = survey[i].answers;
+            console.log(survey[i].question.pl)
 
             // Create question element
-            var surveyHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + "question.pl" + '</span></p></div>';
-            console.log(question.pl)
+            var surveyHtml = '<div class="chat-message bot-message"><p class="botText"><span>' + survey[i].question.pl + '</span></p></div>';
             $("#chatbox").append(surveyHtml);
 
             // Create answer elements
             for (var j = 0; j < answers.length; j++) {
               var answer = answers[j].answer;
+              var answerDiv = document.createElement('div');
               var answerLabel = document.createElement('label');
               var answerInput = document.createElement('input');
+              answerDiv.className = 'chat-message bot-message answer';
               answerInput.type = 'radio';
               answerInput.name = 'answer-' + i;
-              answerInput.value = answer.en;
+              answerInput.value = answer.pl;
 
+              answerDiv.appendChild(answerLabel);
               answerLabel.appendChild(answerInput);
-              answerLabel.appendChild(document.createTextNode(answer.en));
-              $("#chatbox").append(answerLabel);
+              answerLabel.appendChild(document.createTextNode(answer.pl));
+              $("#chatbox").append(answerDiv);
             }
+            // Add a line break after each question
+            $("#chatbox").append("<br>");
           }
 
           // Create submit button
-          var submitButton = '<button onclick="submitSurvey()">Submit</button>';
-          $("#chatbox").append(submitButton);
-        }
+          var submitBtn = document.createElement('button');
+          submitBtn.id = 'submit-btn';
+          submitBtn.innerHTML = 'Submit';
+          $("#chatbox").append(submitBtn);
+          }
       </script>
     </div>
 </body>
