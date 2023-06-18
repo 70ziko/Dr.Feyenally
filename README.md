@@ -16,15 +16,20 @@ To run the chatbot web app locally, follow these steps:
 
    ```bash
    git clone https://github.com/70ziko/Dr.Feyenally.git
-   cd chatbot-web-app
+   cd Dr.Feyenally
 
 Install the dependencies:
 
     pip install -r requirements.txt
 
+Copy the .env.template to .env
+    
+    cp .env.template .env
+
 Set the OpenAI API key as an environment variable:
 
-    export OPENAI_API_KEY=<your-api-key>
+    in .env file:
+    OPENAI_API_KEY=<your-api-key>
 
 Run the application:
 
